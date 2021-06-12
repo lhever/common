@@ -1,6 +1,6 @@
 server:
   port: 444
-  host: 10.16.84.32
+  host: 127.0.0.1
   servlet:
     context-path: '/log'
     session:
@@ -43,7 +43,7 @@ log:
       rollingFileName: rqm
       description: 小区管理平台日志
     test:
-      basePath: F:/dev_ops/log
+      basePath: D:/Git_WSP/log-view/common/log
       rollingFileName: logview
       description: 程序自身日志
     conve:
