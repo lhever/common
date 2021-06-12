@@ -1,0 +1,35 @@
+server:
+  port: 444
+  host: 10.33.65.9
+  servlet:
+    context-path: /log
+
+logging:
+  level:
+    root: info
+
+
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+
+log:
+  websocket:
+    maxLine: 7000
+  rhmWeb:
+    basePath: /soft/rent-WEB-ZS-202005192153/log/
+    rollingFileName: rhm
+  convenience:
+    basePath: /hikdata/log/convenience/
+    rollingFileName: convenience
+  rqmWeb:
+    basePath: /hikdata/log/rqm/
+    rollingFileName: rqm
+  test:
+    basePath: /app/logview/log/
+    rollingFileName: logview
+
+
+

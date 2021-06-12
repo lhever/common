@@ -1,0 +1,63 @@
+server:
+  port: 444
+  host: 10.16.84.32
+  servlet:
+    context-path: /log
+    session:
+      timeout: 30m
+
+logging:
+  level:
+    root: debug
+
+
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+      
+jasypt:
+  encryptor:
+    password: cc1892253ce84f3ea0efecbc5dfa4be4
+
+log:
+  websocket:
+    address: ws://${server.host}:${server.port}${server.servlet.context-path}  ## http协议
+#    address: wss://myweb.cn:443${server.servlet.context-path}  ## https协议
+    maxLine: 7000
+  user:
+    name: ENC(ovE2VaVU7txr6g6tU2rL/A==)
+    pwd: ENC(XVpY4D3lS/07fII0EMmP38CQ3sGdVEG9)
+  files:
+    rhmWeb:
+      basePath: /soft/rent-WEB-ZS-202005192153/log/
+      rollingFileName: rhm
+      description: 出租屋web端日志
+    rhmMobile:
+      basePath: /soft/rhm-mobile-202005221137/log
+      rollingFileName: rhm_mobile
+      description: 出租屋移动端日志
+    rqmWeb:
+      basePath: /hikdata/log/rqm/
+      rollingFileName: rqm
+      description: 小区管理平台日志
+    test:
+      basePath: F:/dev_ops/log
+      rollingFileName: logview
+      description: 程序自身日志
+    conve:
+      basePath: /hikdata/log/convenience
+      rollingFileName: convenience
+      description: 物业管理组件日志
+    cbdca:
+      basePath: /hikdata/log/cbdca
+      rollingFileName: cbdca
+      description: 基础服务日志
+    gateway:
+      basePath: /hikdata/log/gateway-server
+      rollingFileName: gateway-server
+      description: 网关日志
+
+
+
