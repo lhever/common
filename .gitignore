@@ -10,4 +10,7 @@
 
 core/target
 log-viewer/target
+log
+log/logview
+log/*.zip
 
