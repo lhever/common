@@ -6,8 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
-<%@ page import="com.hikvision.sc.devops.logviewer.constant.LogViewerConst" %>
-<%@ page import="com.hikvision.sc.devops.core.utils.FileUtils" %>
+<%@ page import="com.lhever.sc.devops.logviewer.constant.LogViewerConst" %>
+<%@ page import="com.lhever.sc.devops.core.utils.FileUtils" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String serviceName = request.getParameter("serviceName");
