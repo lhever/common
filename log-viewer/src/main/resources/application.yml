@@ -43,7 +43,7 @@ log:
       rollingFileName: rqm
       description: 小区管理平台日志
     test:
-      basePath: D:\Git_WSP\log-view\comon\log
+      basePath: D:\Git_WSP\log-view\common\log
       rollingFileName: logview
       description: 程序自身日志
     conve:
