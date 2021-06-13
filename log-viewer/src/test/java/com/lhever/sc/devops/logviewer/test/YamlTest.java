@@ -1,7 +1,7 @@
 package com.lhever.sc.devops.logviewer.test;
 
-import com.lhever.sc.devops.core.utils.*;
 import com.lhever.sc.devops.logviewer.constant.LogViewerConst;
+import com.lhever.sc.devops.core.utils.*;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;

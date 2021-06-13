@@ -1,9 +1,11 @@
 package com.lhever.sc.devops.core.support.initializer.ctx;
 
-import com.lhever.sc.devops.core.support.initializer.service.BaseInitService;
 import com.lhever.sc.devops.core.utils.FileUtils;
+import com.lhever.sc.devops.core.support.initializer.service.BaseInitService;
 
 import java.io.File;
+
+import static com.lhever.sc.devops.core.support.initializer.service.BaseInitService.println;
 
 /**
  * <p>

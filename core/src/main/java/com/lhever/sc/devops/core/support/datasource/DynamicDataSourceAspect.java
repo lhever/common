@@ -22,7 +22,7 @@ public class DynamicDataSourceAspect {
     /**
      * 对指定注解，进行横切，创建一个横切的对象方法
      */
-    @Pointcut("@annotation(com.hikvision.sc.devops.core.support.datasource.DS)")
+    @Pointcut("@annotation(com.lhever.sc.devops.core.support.datasource.DS)")
     public void dsAnnotationPoint() {
     }
 

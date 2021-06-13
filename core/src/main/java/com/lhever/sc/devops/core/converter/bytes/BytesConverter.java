@@ -2,8 +2,6 @@ package com.lhever.sc.devops.core.converter.bytes;
 
 import com.lhever.sc.devops.core.utils.LogUtils;
 import com.lhever.sc.devops.core.utils.StringUtils;
-import com.lhever.sc.devops.core.utils.LogUtils;
-import com.lhever.sc.devops.core.utils.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;

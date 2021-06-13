@@ -31,14 +31,6 @@ public class ValidationUtilsTest {
     public static class SizeValidationDto {
         @Size(max = 32)
         private String name;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
     }
 
 
@@ -52,21 +44,7 @@ public class ValidationUtilsTest {
         @Pattern(regexp="^(\\d{4}-\\d{2}-\\d{2}[T]{1}\\d{2}:\\d{2}:\\d{2}[+-]{1}\\d{2}:\\d{2})$", message="日期格式错误")
         private String endTime;
 
-        public String getStartTime() {
-            return startTime;
-        }
 
-        public void setStartTime(String startTime) {
-            this.startTime = startTime;
-        }
-
-        public String getEndTime() {
-            return endTime;
-        }
-
-        public void setEndTime(String endTime) {
-            this.endTime = endTime;
-        }
     }
 
 
@@ -125,13 +103,6 @@ public class ValidationUtilsTest {
         @Min(value= 1 ,message= "页码不能小于1" )
         private Integer pageNo;
 
-        public Integer getPageNo() {
-            return pageNo;
-        }
-
-        public void setPageNo(Integer pageNo) {
-            this.pageNo = pageNo;
-        }
     }
 
     @Test

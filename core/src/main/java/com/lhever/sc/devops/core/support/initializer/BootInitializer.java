@@ -1,8 +1,10 @@
 package com.lhever.sc.devops.core.support.initializer;
 
-import com.lhever.sc.devops.core.support.initializer.service.BaseInitService;
 import com.lhever.sc.devops.core.support.initializer.service.LinuxInitService;
 import com.lhever.sc.devops.core.support.initializer.service.WindowsInitService;
+import com.lhever.sc.devops.core.support.initializer.service.BaseInitService;
+
+import static com.lhever.sc.devops.core.support.initializer.service.BaseInitService.println;
 
 /**
  * <p>

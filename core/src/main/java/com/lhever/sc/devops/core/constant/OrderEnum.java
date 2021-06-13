@@ -1,7 +1,6 @@
 package com.lhever.sc.devops.core.constant;
 
 import com.lhever.sc.devops.core.utils.StringUtils;
-import com.lhever.sc.devops.core.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

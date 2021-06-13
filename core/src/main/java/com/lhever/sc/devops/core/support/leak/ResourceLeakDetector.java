@@ -12,14 +12,15 @@ package com.lhever.sc.devops.core.support.leak;
  * @modify by reason:{方法名}:{原因}
  */
 
-import com.lhever.sc.devops.core.config.SystemPropertyUtils;
 import com.lhever.sc.devops.core.constant.EmptyArrays;
+import com.lhever.sc.devops.core.config.SystemPropertyUtils;
 import com.lhever.sc.devops.core.utils.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.ref.ReferenceQueue;
+
 import java.lang.ref.WeakReference;
+import java.lang.ref.ReferenceQueue;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,6 +32,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
+
+import static com.lhever.sc.devops.core.utils.ObjectUtils.simpleClassName;
 
 public class ResourceLeakDetector<T> {
 

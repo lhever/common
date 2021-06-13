@@ -39,37 +39,6 @@ public class StreamTest {
             this.count = count;
         }
 
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getAuthor() {
-            return author;
-        }
-
-        public void setAuthor(String author) {
-            this.author = author;
-        }
-
-        public Integer getType() {
-            return type;
-        }
-
-        public void setType(Integer type) {
-            this.type = type;
-        }
-
-        public Integer getCount() {
-            return count;
-        }
-
-        public void setCount(Integer count) {
-            this.count = count;
-        }
     }
 
     public enum  ArticleType {
@@ -85,38 +54,6 @@ public class StreamTest {
         String author;
         ArticleType type;
         int likes;
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getAuthor() {
-            return author;
-        }
-
-        public void setAuthor(String author) {
-            this.author = author;
-        }
-
-        public ArticleType getType() {
-            return type;
-        }
-
-        public void setType(ArticleType type) {
-            this.type = type;
-        }
-
-        public int getLikes() {
-            return likes;
-        }
-
-        public void setLikes(int likes) {
-            this.likes = likes;
-        }
     }
 
    /* 分组结果的键为复杂类型
