@@ -89,8 +89,9 @@ public class DownloadUtils {
 
         //创建数据缓冲区
         PrintWriter writer = response.getWriter();
+        BufferedReader reader = null;
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
             String line = null;
             StringBuilder builder = new StringBuilder();
             while ((line = reader.readLine()) != null) {
@@ -102,7 +103,7 @@ public class DownloadUtils {
         } catch (Exception e) {
             logger.error("write " + file.getName() + " error", e);
         } finally {
-            IOUtils.closeQuietly(writer);
+            IOUtils.closeQuietly(reader,writer);
         }
     }
 
