@@ -2,7 +2,6 @@ package com.lhever.sc.devops.core.support.initializer;
 
 import com.lhever.sc.devops.core.support.initializer.service.LinuxInitService;
 import com.lhever.sc.devops.core.support.initializer.service.WindowsInitService;
-import com.lhever.sc.devops.core.support.initializer.service.BaseInitService;
 
 import static com.lhever.sc.devops.core.support.initializer.service.BaseInitService.println;
 
@@ -24,16 +23,16 @@ public class BootInitializer {
         String os = System.getProperty("os.name").toLowerCase();
 
         if (os.indexOf("linux") >= 0) {
-            BaseInitService.println("current os is linux");
+            println("current os is linux");
             new LinuxInitService().init(clazz, args, provider);
 
 
         } else if (os.indexOf("windows") >= 0) {
-            BaseInitService.println("current os is windows");
+            println("current os is windows");
             new WindowsInitService().init(clazz, args, provider);
 
         } else {
-            BaseInitService.println("unknow os !!!, exit");
+            println("unknow os !!!, exit");
         }
 
     }

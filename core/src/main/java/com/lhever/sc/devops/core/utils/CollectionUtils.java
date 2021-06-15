@@ -1,5 +1,6 @@
 package com.lhever.sc.devops.core.utils;
 
+import com.lhever.sc.devops.core.constant.CommonConstants;
 import com.lhever.sc.devops.core.support.page.RepeatablePage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class CollectionUtils {
@@ -24,14 +26,24 @@ public class CollectionUtils {
 
 
     @SuppressWarnings("Map generic type missing")
+    @Deprecated
     public static boolean mapEmpty(Map map) {
         return (map == null || map.size() == 0);
     }
 
     @SuppressWarnings("Map generic type missing")
+    @Deprecated
     public static boolean mapNotEmpty(Map map) {
 
         return !mapEmpty(map);
+    }
+
+    public static boolean isEmpty(Map map) {
+        return (map == null || map.size() == 0);
+    }
+
+    public static boolean isNotEmpty(Map map) {
+        return !isEmpty(map);
     }
 
     public static <T> int nullSafeSize(Collection<T> collection) {
@@ -166,12 +178,38 @@ public class CollectionUtils {
         return filtered;
     }
 
+    public static <T> List<String> getNotBlank(List<T> list, Function<T, String> func) {
+        if (list == null) {
+            return new ArrayList<>(0);
+        }
+
+        List<String> filtered = list.stream()
+                .filter(i -> i != null)
+                .map(i -> func.apply(i))
+                .filter(i -> StringUtils.isNotBlank(i))
+                .collect(Collectors.toList());
+        return filtered;
+    }
+
     public static  <T> List<T> getNotNull(List<T> list) {
         if (list == null) {
             return new ArrayList<>(0);
         }
 
         List<T> filtered = list.stream().filter(i -> i != null).collect(Collectors.toList());
+        return filtered;
+    }
+
+    public static <T> List<String> getNotNull(List<T> list, Function<T, String> func) {
+        if (list == null) {
+            return new ArrayList<>(0);
+        }
+
+        List<String> filtered = list.stream()
+                .filter(i -> i != null)
+                .map(i -> func.apply(i))
+                .filter(i -> i != null)
+                .collect(Collectors.toList());
         return filtered;
     }
 
@@ -195,6 +233,157 @@ public class CollectionUtils {
         }
 
     }
+
+
+    /**
+     * 拆分集合
+     * @author lihong10 2020/7/8 11:15
+     * @param collection
+     * @param batch
+     * @return
+     * @modificationHistory=========================逻辑或功能性重大变更记录
+     * @modify by user: {修改人} 2020/7/8 11:15
+     * @modify by reason:{原因}
+     */
+    public static <T> List<List<T>> splitCollection(Collection<T> collection, Integer batch) {
+        List<List<T>> listList = new ArrayList<>();
+        if (isEmpty(collection)) {
+            return listList;
+        }
+        if ((batch == null) || (batch <= 0)) {
+            batch = collection.size();
+        }
+
+        RepeatablePage<T> page = new RepeatablePage<>(new ArrayList<>(collection), batch);
+        for (List<T> subPage : page) {
+            List<T> subList = new ArrayList<>();
+            for (T t : subPage) {
+                subList.add(t);
+            }
+            listList.add(subList);
+        }
+        return listList;
+    }
+
+
+    public static <T> List<T> merge(List<List<T>> listOfLists) {
+        if (isEmpty(listOfLists)) {
+            return new ArrayList<>(0);
+        }
+        List<T> collect = listOfLists.stream().filter(li -> isNotEmpty(li)).flatMap(
+                subList -> subList.stream().map(Function.identity())
+        ).collect(Collectors.toList());
+        return collect;
+    }
+
+    public static String repeatN(String obj, int n, String delimiter) {
+        String  result = String.join(delimiter, Collections.nCopies(n, obj));
+        return result;
+    }
+
+    public static String repeatN(int n, String obj) {
+        return repeatN(obj, n, CommonConstants.EMPTY);
+    }
+
+    public static <E> void predicateAndAdd(Collection<E> collection, E e, Predicate<E> predicate) {
+        if (predicate.test(e)) {
+            collection.add(e);
+        }
+    }
+
+
+    /**
+     * 先过滤，再映射
+     * @author lihong10 2020/11/13 10:18
+     * @param list
+     * @param predicate
+     * @param mapper
+     * @return
+     * @modificationHistory=========================逻辑或功能性重大变更记录
+     * @modify by user: {修改人} 2020/11/13 10:18
+     * @modify by reason:{原因}
+     */
+    public static <T, R> List<R> filterAndMap(List<T> list, Predicate<T> predicate, Function<? super T, ? extends R> mapper) {
+        if (list == null || list.size() == 0) {
+            return new ArrayList<>(0);
+        }
+
+        List<R> filtered = list.stream()
+                .filter(predicate)
+                .map(mapper)
+                .collect(Collectors.toList());
+        return filtered;
+    }
+
+    /**
+     * 先映射，再过滤
+     * @author lihong10 2020/11/13 10:18
+     * @param list
+     * @param predicate
+     * @param mapper
+     * @return
+     * @modificationHistory=========================逻辑或功能性重大变更记录
+     * @modify by user: {修改人} 2020/11/13 10:18
+     * @modify by reason:{原因}
+     */
+    public static <T, R> List<R> mapAndFilter(List<T> list, Function<? super T, ? extends R> mapper, Predicate<R> predicate) {
+        if (list == null || list.size() == 0) {
+            return new ArrayList<>(0);
+        }
+
+        List<R> filtered = list.stream()
+                .map(mapper)
+                .filter(predicate)
+                .collect(Collectors.toList());
+        return filtered;
+    }
+
+
+    public static <A> List<A> filter(Collection<A> list, Predicate<A> predicate) {
+        if (CollectionUtils.isEmpty(list)) {
+            return new ArrayList<>(0);
+        }
+        List<A> filtered = list.stream().filter(predicate).collect(Collectors.toList());
+        return filtered;
+    }
+
+    public static <A, B> List<B> map(Collection<A> collection, Function<A, B> func) {
+        if (CollectionUtils.isEmpty(collection)) {
+            return new ArrayList<>(0);
+        }
+        ArrayList<B> collect = collection.stream().map(i -> func.apply(i)).collect(Collectors.toCollection(() -> new ArrayList<>(collection.size())));
+        return collect;
+    }
+
+    public static <A> List<A> addAll(Collection<A>...  srcs) {
+        if (srcs == null) {
+            return new ArrayList<>(0);
+        }
+        int total = 0;
+        for (Collection<A> src : srcs) {
+            if (src == null) {
+                continue;
+            }
+            total += src.size();
+        }
+        List<A> all = new ArrayList<>(total);
+        for (Collection<A> src : srcs) {
+            if (src == null) {
+                continue;
+            }
+            all.addAll(src);
+        }
+        return all;
+    }
+
+
+
+
+
+
+
+
+
 
 
 
