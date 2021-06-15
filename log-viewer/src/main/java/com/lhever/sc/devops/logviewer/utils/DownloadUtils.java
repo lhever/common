@@ -1,5 +1,6 @@
 package com.lhever.sc.devops.logviewer.utils;
 
+import com.lhever.sc.devops.core.constant.CommonConstants;
 import com.lhever.sc.devops.core.utils.IOUtils;
 import com.lhever.sc.devops.core.utils.URLUtils;
 import org.slf4j.Logger;
@@ -77,6 +78,51 @@ public class DownloadUtils {
         } finally {
             IOUtils.closeQuietly(bis, os);
         }
+    }
+
+
+
+    public static void write(File file, HttpServletResponse response) throws Exception {
+        response.setCharacterEncoding("UTF-8");
+        response.setHeader("content-type", "text/plain");
+        response.setContentType("text/plain");
+
+        //创建数据缓冲区
+        PrintWriter writer = response.getWriter();
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+            String line = null;
+            StringBuilder builder = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                builder.setLength(0);
+                builder.append(line).append(CommonConstants.LF);
+                write(writer, builder.toString());
+            }
+            writer.flush();
+        } catch (Exception e) {
+            logger.error("write " + file.getName() + " error", e);
+        } finally {
+            IOUtils.closeQuietly(writer);
+        }
+    }
+
+
+    public static void write(HttpServletResponse response, String content) throws IOException {
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter writer = null;
+        try {
+            writer = response.getWriter();
+            writer.write(content);
+            writer.flush();
+        } catch (IOException e) {
+        } finally {
+            writer.close();
+        }
+    }
+
+
+    public static void write(PrintWriter writer, String content) throws IOException {
+        writer.write(content);
     }
 
 

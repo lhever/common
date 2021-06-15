@@ -30,7 +30,7 @@
 <div class="container form-margin-top">
     <form id="loginForm" class="form-signin" action="/log/login" enctype="multipart/form-data" method="post" onsubmit="return encryptPwd()">
         <h2 class="form-signin-heading" align="center">运维中心统一登录平台</h2>
-        <input type="text" name="username" class="form-control form-margin-top" placeholder="账号" required autofocus>
+        <input id="userInput" type="text" name="username" class="form-control form-margin-top" placeholder="账号" required autofocus>
         <input id="pwdInput" type="password" name="password" class="form-control" placeholder="密码" required>
         ${errorMsg}
         <input type="checkbox" name="remember-me">自动登录
@@ -48,6 +48,11 @@
             var newPwd = "123456" + password;
             var encodedPwd = $.md5(Base64.encode(newPwd) + "123!@#");
             $("#pwdInput").val(encodedPwd);
+        }
+        var user = $("#userInput").val();
+        if (user) {
+            var encodedUser = $.md5(Base64.encode(user + user));
+            $("#userInput").val(encodedUser);
         }
         return true;
     }

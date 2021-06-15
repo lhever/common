@@ -13,6 +13,10 @@
             width: 100%;
         }
 
+        .hover {
+            background-color: rgb(178, 60, 117);
+        }
+
         table caption {
             font-size: 24px;
             border-bottom: 4px solid #cdc4c4;
@@ -104,17 +108,18 @@
             <th class="indexcolname"><a href="javascript:void(0)">日志文件名</a></th>
             <th class="indexcollastmod"><a href="javascript:void(0)">操作</a></th>
             <th class="indexcollastmod">&nbsp;&nbsp;&nbsp;</th>
+            <th class="indexcollastmod">   </th>
         </tr>
         </thead>
         <tbody>
         <tr class="indexbreakrow">
-            <th colspan="5">
+            <th colspan="6">
                 <hr>
             </th>
         </tr>
         ${content}
         </tbody>
-        <tfoot><tr class="indexbreakrow"><td colspan="5">日志总数:${total}<td></tr></tfoot>
+        <tfoot><tr class="indexbreakrow"><td colspan="6">日志总数:${total}<td></tr></tfoot>
     </table>
 </div>
 
@@ -125,11 +130,17 @@
 
 <script>
     $(document).ready(function () {
-        tdBindEvent();
+        //注册下载事件
+        bindDownloadEvent();
+        // 注册查看内容事件
+        bindViewEvent();
+
+        //注册鼠标悬浮事件
+        // bindHoverEvent();
     });
 
 
-    function tdclick() {
+    function clickAndDownload() {
 
         var self = $(this);
         var serviceName = self.attr("serviceName");
@@ -157,17 +168,103 @@
         $form.submit();*/
     }
 
-    function tdBindEvent() {
+
+    function clickAndView() {
+        var self = $(this);
+        var serviceName = self.attr("serviceName");
+        var fileName = self.attr("fileName");
+
+        var url = "/log/view?fileName=" + fileName +  "&serviceName=" + serviceName;
+        console.log("url is: " + url)
+        window.location.href = url;
+    }
+
+    function bindDownloadEvent() {
         var tds = $("td[name='download']");
-
-        console.log(tds);
-
         var tdArr = tds.toArray();
-        for (i=0; i< tdArr.length; i++)
+        for (var i=0; i< tdArr.length; i++)
         {
-            $(tdArr[i]).bind("click", tdclick)
-        }
+            $(tdArr[i]).bind("click", clickAndDownload)
 
+            $(tdArr[i]).bind("mouseover", function () {
+                var level = $(this).attr("level")
+                hoverTr(level, true);
+            })
+            $(tdArr[i]).bind("mouseout", function () {
+                var level = $(this).attr("level");
+                hoverTr(level, false);
+            })
+        }
+    }
+
+
+
+    function bindViewEvent() {
+        var tds = $("td[name='view']");
+        var tdArr = tds.toArray();
+        for (var i=0; i< tdArr.length; i++)
+        {
+            $(tdArr[i]).bind("click", clickAndView)
+
+            $(tdArr[i]).bind("mouseover", function () {
+                var level = $(this).attr("level")
+                hoverTr(level, true);
+            })
+            $(tdArr[i]).bind("mouseout", function () {
+                var level = $(this).attr("level")
+                hoverTr(level, false);
+            })
+        }
+    }
+
+
+    function hoverTr(level,  add) {
+        var exp = "tr[level='" + level + "']";
+        var trr = $(exp);
+        var trs = trr.toArray();
+        for (var j = 0; j < trs.length; j++) {
+            var cls = $(trs[j]).attr("class");
+            console.log(cls);
+            var even = (cls == "even");
+
+            if (add) {
+                // $(trs[j]).addClass("hover");
+                $(trs[j]).css("background-color", "rgba(227,15,15,0.56)");
+            } else {
+                // $(trs[j]).removeClass("hover");
+                if (even) {
+                    $(trs[j]).css("background-color", "#ffffff");
+                } else {
+                    $(trs[j]).css("background-color", "#f5f5f5");
+                }
+
+            }
+        }
+    }
+
+
+
+
+    function bindHoverEvent() {
+       /* $("tr").bind("mouseover", function () {
+            $(this).css("background-color", "#eeeeee");
+        })
+        $("tr").bind("mouseout", function () {
+            $(this).css("background-color", "#ffffff");
+        })*/
+
+        var trs = $("tr");
+        var trArr = trs.toArray();
+        console.log("tr total is " + trArr.length);
+        for (var i=0; i< trArr.length; i++)
+        {
+            $(trArr[i]).bind("mouseover", function () {
+                $(this).addClass("hover");
+            })
+            $(trArr[i]).bind("mouseout", function () {
+                $(this).removeClass("hover");
+            })
+        }
     }
 
 </script>

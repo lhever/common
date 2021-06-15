@@ -68,14 +68,12 @@ public class LoginController {
 		if (isLocked(loginCount)) {
 			return "登录被锁定15分钟!";
 		}
-		if (!loginUser.equals(userName) || StringUtils.isBlank(password)) {
+		if (!getEncodedUserName(loginUser).equals(userName) || StringUtils.isBlank(password)) {
 			loginCache.incLoginCount(loginCountKey, loginCount);
 			return "用户名或密码错误!";
 		}
 
-		String base64 = Base64Utils.encode("123456" + loginPwd);
-		String md5 = Md5Utils.md5Quitely(base64 + "123!@#");
-
+		String md5 = getEncodedPwd(loginPwd);
 
 		if (StringUtils.equals(md5, password)) {
 			loginCache.clear(loginCountKey);
@@ -84,6 +82,14 @@ public class LoginController {
 			loginCache.incLoginCount(loginCountKey, loginCount);
 			return "用户名或密码错误!";
 		}
+	}
+
+	private String getEncodedUserName(String userName) {
+		return Md5Utils.md5Quitely(Base64Utils.encode("" + userName + userName));
+	}
+
+	private String getEncodedPwd(String pwd) {
+		return Md5Utils.md5Quitely(Base64Utils.encode("123456" + pwd) + "123!@#");
 	}
 
 	private String getLoginCountKey(String clientIp) {

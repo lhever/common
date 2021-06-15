@@ -1,6 +1,7 @@
 package com.lhever.sc.devops.logviewer.controller;
 
 import com.lhever.sc.devops.core.utils.FileUtils;
+import com.lhever.sc.devops.core.utils.ZipUtils;
 import com.lhever.sc.devops.logviewer.utils.CommonUtils;
 import com.lhever.sc.devops.logviewer.utils.DownloadUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.PrintWriter;
 
 /**
  * <p>
@@ -33,19 +33,44 @@ public class DownloadController {
 
         String filePath = "" + FileUtils.trimTail(logBasePath) + "/" + fileName;
         if (!FileUtils.fileExists(filePath)) {
-            PrintWriter writer = response.getWriter();
-            writer.write("no such file");
-            writer.flush();
-            writer.close();
+            DownloadUtils.write(response, "no such file");
             return;
         }
-
         DownloadUtils.downLoad(new File(filePath), fileName, response);
     }
 
 
+    @RequestMapping(path = "view", method = RequestMethod.GET, produces = "text/plain")
+    @ResponseBody
+    public synchronized void view(HttpServletResponse response, String serviceName, String fileName) throws Exception {
+        String logBasePath = CommonUtils.getLogBasePath(serviceName);
+        String filePath = "" + FileUtils.trimTail(logBasePath) + "/" + fileName;
+        if (!FileUtils.fileExists(filePath)) {
+            DownloadUtils.write(response, "文件不存在");
+        }
 
-
+        File maybeZip = new File(filePath);
+        if (maybeZip.getName().endsWith(".zip")) {
+            String maybeLog = maybeZip.getAbsolutePath().substring(0, maybeZip.getAbsolutePath().length() - 4);
+            File mybaelogFile = new File(maybeLog);
+            boolean unzip = false;
+            if (!mybaelogFile.exists()) {
+                ZipUtils.unZip(maybeZip, logBasePath);
+                unzip = true;
+            }
+            if (mybaelogFile.exists()) {
+                DownloadUtils.write(mybaelogFile, response);
+                if (unzip) { //说明文件是解压出来的，删除
+                    FileUtils.delete(mybaelogFile);
+                }
+                return;
+            }
+        } else if (maybeZip.length() / 1024 / 1024 <= 10) {
+            DownloadUtils.write(maybeZip, response);
+            return;
+        }
+        DownloadUtils.write(response, "该文件不可访问");
+    }
 
 
 }
